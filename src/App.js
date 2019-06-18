@@ -1,8 +1,27 @@
-import React from 'react';
+import React , {Component} from 'react';
 import logo from './logo.svg';
+import Main from './components/Main';
+import Secret from './components/Secret';
+import Callback from './components/Callback';
+import NotFound from './components/NotFound';
 import './App.css';
 
-function App() {
+class App extends Component {
+  render(){
+    let mainComponent="";
+    switch(this.props.location){
+      case"":
+      mainComponent = <Main {...this.props}/>
+      break;
+      case "callback":
+        mainComponent = <Callback/>
+        break;
+        case "secret":
+          mainComponent = this.props.auth.isAuthenticated()? (<Secret {...this.props}/>) : (<NotFound/>);
+          break;
+          default:
+         mainComponent= <NotFound/>;
+    }
   return (
     <div className="App">
       <header className="App-header">
@@ -10,17 +29,12 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+     
       </header>
+{mainComponent}
     </div>
   );
+}
 }
 
 export default App;
